@@ -1,0 +1,20 @@
+from sympy import *
+A = Matrix([[0, 1, 0],[-1, 0, 1], [0, 0, 0]])
+eig_info = A.eigenvects()#с.з., кратность, с.в.
+t = Symbol('t', real = True)
+eig_info[1][2][0] * (cos(t) - I * sin(t))
+real_imag_parts = (eig_info[1][2][0] * (cos(t) - I * sin(t))).as_real_imag()
+Phi = Matrix([eig_info[0][2][0]. T, real_imag_parts[0].T, real_imag_parts[1].T]).T
+expA = Phi@Phi.subs(t, 0).inv()#заменить t на 0 в Phi
+B = Matrix([[0], [0], [1]])
+T = 2 * pi 
+c = Matrix([[0], [0], [0]]) - expA.subs(t, T) @ Matrix([[1], [0], [0]])
+H = simplify(expA.subs(t, T - t)@B)
+l1, l2, l3 = symbols('l1 l2 l3')
+l = Matrix([[l1], [l2], [l3]])
+pprint(H.T@l)
+beta = Symbol('beta')
+res = integrate(sin(t) - beta, (t, asin(beta), pi - asin(beta)))- integrate(sin(t) - beta, (t, 0, asin(beta))) - integrate(sin(t) - beta, (t, pi - asin(beta), 2 * pi))
+psi = simplify(res)
+phi = res
+psi.diff()
